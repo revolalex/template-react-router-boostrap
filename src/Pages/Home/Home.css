@@ -1,0 +1,13 @@
+
+.main-home{
+    background-image: url('https://1.bp.blogspot.com/-0mV9UfJhXNE/XD930chJlQI/AAAAAAAAAuM/x_DPVMFGf94err7Wznmm4l0XzC74VIPNwCKgBGAs/w0/hi-tech-interface-abstract-9-4k.jpg');
+}
+
+.backgroundImage{
+    background: url('https://1.bp.blogspot.com/-0mV9UfJhXNE/XD930chJlQI/AAAAAAAAAuM/x_DPVMFGf94err7Wznmm4l0XzC74VIPNwCKgBGAs/w0/hi-tech-interface-abstract-9-4k.jpg') no-repeat center center fixed; 
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    height: 100vh;
+}

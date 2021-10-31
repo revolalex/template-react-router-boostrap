@@ -1,0 +1,8 @@
+.about-background {
+  background: url('https://image4.uhdpaper.com/wallpaper/grid-lines-abstract-digital-art-uhdpaper.com-4K-4.306.jpg') no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  height: 100vh;
+}

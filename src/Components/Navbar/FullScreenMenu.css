@@ -1,0 +1,125 @@
+
+/* The hidden checkbox */
+.menuToggle input {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 90px;
+  height: 60px;
+  opacity: 0;
+  z-index: 1;
+  margin: 1rem;
+  cursor: pointer;
+}
+
+/* The container of the hamburger lines */
+.menuToggle .hamburger {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 60px;
+  height: 50px;
+  margin: 1.5rem;
+  
+}
+
+/* All three lines of the hamburger */
+.menuToggle .hamburger span {
+  display: flex;
+  background: rgb(54, 218, 247);
+  width: 60px;
+  height: 8px;
+  margin-bottom: 8px;
+  border-radius: 10px;
+  transition: 0.2s ease-in;
+  
+}
+
+/* Pushing the middle line of the hamburger to the left when not hovered*/
+.menuToggle .hamburger .middle {
+  position: relative;
+  right: 10px;
+z-index: 1000;
+}
+
+/* Pushing the middle line of the hamburger to the right when hovered*/
+.menuToggle input:hover+.hamburger>.middle {
+  transform: translateX(15%);
+  
+}
+
+/* Pushing the middle line of the hamburger to the right when checked*/
+.menuToggle input:checked+.hamburger>.middle {
+  transform: translateX(15%);
+  
+}
+
+/* Making an X while menu is open */
+
+.x-line {
+  opacity: 0;
+  position: relative;
+  bottom: 32px;
+  right: 9px;
+}
+
+.menuToggle input:checked+.hamburger>span {
+  opacity: 0;
+}
+
+.menuToggle input:checked+.hamburger>.middle {
+  opacity: 1;
+  transform: rotate(135deg);
+}
+
+.menuToggle input:checked+.hamburger>.x-line {
+  opacity: 1;
+  transform: rotate(45deg);
+}
+
+/* Hides the menu when input not checked*/
+.menuToggle .menu {
+  opacity: 0;
+  transform: scale(0.0);
+  transition: 0.2s ease-in;
+  /* Menu styling*/
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+}
+
+/* Styling the links in the menu*/
+.menu li {
+  list-style: none;
+  font-size: 3rem;
+  padding: 1rem;
+  text-align: center;
+}
+
+.menu li a {
+  color: rgb(54, 218, 247) !important;
+
+}
+
+/* Shows the menu when input is checked*/
+.menuToggle input:checked~.menu {
+  transform: scale(1.0);
+  opacity: 1;
+}
+
+/* Underlining menu links when hovered*/
+.menuToggle .menu a:hover {
+  text-decoration: underline !important;
+}
+
+.activeMenu{
+  text-decoration: underline !important;
+
+}
