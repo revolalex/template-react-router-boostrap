@@ -68,7 +68,7 @@ function FormAdd() {
     };
 
     const handleBackgroundColor = () => {
-        console.log(formData.stack)
+
         if (formData.stack === 'Front') {
             return 'info'
         } else {

@@ -1,8 +1,9 @@
 import React from "react";
-import { Row, Col, Container, Form} from "react-bootstrap"
+import { Row, Col, Container, Form } from "react-bootstrap"
 import axios from 'axios';
-import './BlogCards.css'
+import './BlogContainer.css'
 import MyBlogCards from "./MyBlogCard";
+import { toast } from 'react-toastify';
 
 
 class BlogCards extends React.Component {
@@ -20,6 +21,8 @@ class BlogCards extends React.Component {
         this.resetSearchInput = this.resetSearchInput.bind(this)
         this.onKeyUp = this.onKeyUp.bind(this);
         this.onDelete = this.onDelete.bind(this)
+        this.onSubmiEdit = this.onSubmiEdit.bind(this)
+
     }
 
     componentDidMount() {
@@ -29,7 +32,6 @@ class BlogCards extends React.Component {
     async getData() {
         await axios.get('http://localhost:8000/api/blogs/')
             .then(res => {
-                console.log(res.data)
                 this.setState({ articles: res.data })
             })
     }
@@ -88,13 +90,48 @@ class BlogCards extends React.Component {
             stack: 'All'
         })
     }
-    
+
+    notify = () => toast.success("The article was edited with succes", {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+    });
+
+    notifyError = (message) => toast.error(message || "Something went wrong", {
+        position: "top-center",
+        autoClose: 4000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+    });
+
+    async onSubmiEdit(modifyArticleToPut, id) {
+        axios.put(`http://localhost:8000/api/blogs/${id}/`, modifyArticleToPut)
+            .then(res => {
+                if (res.status === 200) {
+                    this.notify()
+                } else if (res.status !== 200) {
+                    this.notifyError()
+                }
+            })
+        await this.getData()
+        document.getElementById('close-modal-edit').click()
+    }
+
     async onDelete(event) {
         let that = this
         const id = event.target.id
         await axios
             .delete(`http://localhost:8000/api/blogs/${id}/`)
             .then((res) => that.getData())
+
+
     }
 
     render() {
@@ -143,7 +180,7 @@ class BlogCards extends React.Component {
                 <Container>
                     <Row xs={1} md={2} className="g-4">
                         {articles.map((article, index) => (
-                            <MyBlogCards index={index} article={article} onDelete={this.onDelete}/>
+                            <MyBlogCards key={index} index={index} article={article} onDelete={this.onDelete} onSubmiEdit={this.onSubmiEdit} />
                         ))}
                     </Row>
                 </Container>

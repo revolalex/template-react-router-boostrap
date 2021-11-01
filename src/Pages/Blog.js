@@ -13,7 +13,6 @@ class Blogs extends React.Component {
     componentDidMount() {
         axios.get('http://localhost:8000/api/blogs/')
             .then(res => {
-                console.log(res.data)
                 this.setState({ articles: res.data })
             })
 

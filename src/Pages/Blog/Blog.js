@@ -1,6 +1,6 @@
 import React from "react";
 // import BlogCards2 from "../../Components/Blog/BlogCard2";
-import BlogCards from "../../Components/Blog/BlogCards";
+import BlogContainer from "../../Components/Blog/BlogContainer";
 import './Blog.css'
 
 class Blog extends React.Component {
@@ -11,7 +11,7 @@ class Blog extends React.Component {
     render() { 
         return ( 
             <div className="blog-background">
-               <BlogCards/>
+               <BlogContainer/>
             </div>
          );
     }
