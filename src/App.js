@@ -8,6 +8,7 @@ import Home from './Pages/Home/Home';
 import Add from './Pages/Add/Add';
 import About from './Pages/About/About';
 import Blog from './Pages/Blog/Blog'
+import Edit from './Pages/Edit/Edit'
 import { ToastContainer } from 'react-toastify';
 
 
@@ -24,6 +25,7 @@ function App() {
           <Route exact path="/add" component={Add} />
           <Route exact path="/about" component={About} />
           <Route exact path="/blog" component={Blog} />
+          <Route exact path="/edit" component={Edit} />
         </Switch>
       </Router>
     </div>

@@ -8,7 +8,6 @@ class About extends React.Component {
             <div className="about-background">
                 <h1 >About</h1>
             </div>
-
         );
     }
 }

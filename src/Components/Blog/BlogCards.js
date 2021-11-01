@@ -1,7 +1,8 @@
 import React from "react";
-import { Row, Col, Card, Container, Accordion, Form } from "react-bootstrap"
+import { Row, Col, Container, Form} from "react-bootstrap"
 import axios from 'axios';
 import './BlogCards.css'
+import MyBlogCards from "./MyBlogCard";
 
 
 class BlogCards extends React.Component {
@@ -18,6 +19,7 @@ class BlogCards extends React.Component {
         this.getData = this.getData.bind(this)
         this.resetSearchInput = this.resetSearchInput.bind(this)
         this.onKeyUp = this.onKeyUp.bind(this);
+        this.onDelete = this.onDelete.bind(this)
     }
 
     componentDidMount() {
@@ -27,6 +29,7 @@ class BlogCards extends React.Component {
     async getData() {
         await axios.get('http://localhost:8000/api/blogs/')
             .then(res => {
+                console.log(res.data)
                 this.setState({ articles: res.data })
             })
     }
@@ -52,7 +55,7 @@ class BlogCards extends React.Component {
         const search = this.state.search
         await axios.get('http://localhost:8000/api/blogs/')
             .then(res => {
-                const filterArticles = res.data.filter(el => el.text.includes(search))
+                const filterArticles = res.data.filter(el => el.text.includes(search) && el.title.includes(search))
                 this.setState({ articles: filterArticles })
             })
         this.resetSearchInput()
@@ -84,6 +87,14 @@ class BlogCards extends React.Component {
             search: '',
             stack: 'All'
         })
+    }
+    
+    async onDelete(event) {
+        let that = this
+        const id = event.target.id
+        await axios
+            .delete(`http://localhost:8000/api/blogs/${id}/`)
+            .then((res) => that.getData())
     }
 
     render() {
@@ -132,34 +143,7 @@ class BlogCards extends React.Component {
                 <Container>
                     <Row xs={1} md={2} className="g-4">
                         {articles.map((article, index) => (
-                            <Col key={index}>
-                                <Card
-                                    bg={article.stack === 'Front' ? "info" : "warning"}
-                                >
-                                    <Card.Header >{article.stack}</Card.Header>
-                                    <Card.Body>
-                                        <Card.Title>{article.title}</Card.Title>
-                                        <Card.Subtitle className="mb-2 text-muted">{article.categories}</Card.Subtitle>
-                                        {/* <Card.Text>
-                                            {article.text}
-                                        </Card.Text> */}
-
-                                        <Accordion
-                                            defaultActiveKey=""
-                                        >
-                                            <Accordion.Item
-                                            // eventKey="0"
-                                            >
-                                                <Accordion.Header>{article.title}</Accordion.Header>
-                                                <Accordion.Body style={{ color: "black" }}>
-                                                    {article.text}
-                                                </Accordion.Body>
-                                            </Accordion.Item>
-                                        </Accordion>
-                                        <Card.Footer className="text-muted">{article.date}</Card.Footer>
-                                    </Card.Body>
-                                </Card>
-                            </Col>
+                            <MyBlogCards index={index} article={article} onDelete={this.onDelete}/>
                         ))}
                     </Row>
                 </Container>

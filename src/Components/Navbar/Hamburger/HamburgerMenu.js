@@ -21,9 +21,13 @@ class MenuLinks extends React.Component {
                     link: '/add',
                 },
                 {
+                    text: 'Edit',
+                    link: '/edit',
+                },
+                {
                     text: 'Blog',
                     link: '/blog',
-                }
+                },
                 
             ]
         }

@@ -1,0 +1,12 @@
+.my-trash {
+  position: absolute;
+  right: 20px;
+  color: rgb(235, 55, 10);
+}
+
+.my-edit-icon {
+  color: rgb(29, 248, 9);
+  padding-top: 3px;
+  position: absolute;
+  right: 40px;
+}
