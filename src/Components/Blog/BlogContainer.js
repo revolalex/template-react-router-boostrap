@@ -1,9 +1,10 @@
 import React from "react";
-import { Row, Col, Container, Form } from "react-bootstrap"
+import { Row, Col, Container, Form, Accordion } from "react-bootstrap"
 import axios from 'axios';
 import './BlogContainer.css'
 import MyBlogCards from "./MyBlogCard";
 import { toast } from 'react-toastify';
+import FormAdd from "../Add/FormAdd";
 
 
 class BlogCards extends React.Component {
@@ -22,6 +23,7 @@ class BlogCards extends React.Component {
         this.onKeyUp = this.onKeyUp.bind(this);
         this.onDelete = this.onDelete.bind(this)
         this.onSubmiEdit = this.onSubmiEdit.bind(this)
+        this.onAddSubmit = this.onAddSubmit.bind(this)
 
     }
 
@@ -111,16 +113,17 @@ class BlogCards extends React.Component {
         progress: undefined,
     });
 
-    async onSubmiEdit(modifyArticleToPut, id) {
+    onSubmiEdit(modifyArticleToPut, id) {
         axios.put(`http://localhost:8000/api/blogs/${id}/`, modifyArticleToPut)
             .then(res => {
                 if (res.status === 200) {
                     this.notify()
+                    this.getData()
                 } else if (res.status !== 200) {
                     this.notifyError()
                 }
             })
-        await this.getData()
+        
         document.getElementById('close-modal-edit').click()
     }
 
@@ -130,7 +133,11 @@ class BlogCards extends React.Component {
         await axios
             .delete(`http://localhost:8000/api/blogs/${id}/`)
             .then((res) => that.getData())
-
+    }
+    onAddSubmit() {
+        this.getData()
+    }
+    closeDeleteModal(){
 
     }
 
@@ -138,8 +145,27 @@ class BlogCards extends React.Component {
 
         const { articles } = this.state
         return (
-            <div>
+            <div className="my-blog-container">
                 <Container>
+
+                    <Row>
+                        <Col>
+                            <Container className=" mb-4">
+                                <Accordion id="add-article-accordion" defaultActiveKey="1">
+                                    <Accordion.Item eventKey="0">
+                                        <Accordion.Header>Add an article</Accordion.Header>
+                                        <Accordion.Body>
+                                            <FormAdd onAddSubmit={this.onAddSubmit} />
+                                        </Accordion.Body>
+                                    </Accordion.Item>
+                                </Accordion>
+
+                            </Container>
+                        </Col>
+                    </Row>
+
+
+
                     <Row>
                         <Col>
                             <Container>

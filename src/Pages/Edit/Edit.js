@@ -1,4 +1,5 @@
 import React from "react";
+import './Edit.css'
 
 class Edit extends React.Component {
     constructor(props) {
@@ -7,9 +8,10 @@ class Edit extends React.Component {
     }
     render() { 
         return ( 
-            <div>
+            <div className="edit-background ">
                 <h1>Edit</h1>
             </div>
+
          );
     }
 }

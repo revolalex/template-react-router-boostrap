@@ -7,7 +7,8 @@ import './FormAdd.css'
 
 
 
-function FormAdd() {
+function FormAdd(props) {
+    const { onAddSubmit } = props
 
     const [validated, setValidated] = useState(false);
     const [formData, setFormData] = useState({
@@ -64,6 +65,7 @@ function FormAdd() {
                 check: false
             })
             setValidated(false);
+            onAddSubmit()
         }
     };
 

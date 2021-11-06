@@ -9,6 +9,7 @@ import Add from './Pages/Add/Add';
 import About from './Pages/About/About';
 import Blog from './Pages/Blog/Blog'
 import Edit from './Pages/Edit/Edit'
+import Login from './Pages/Login/Login'
 import { ToastContainer } from 'react-toastify';
 
 
@@ -26,6 +27,7 @@ function App() {
           <Route exact path="/about" component={About} />
           <Route exact path="/blog" component={Blog} />
           <Route exact path="/edit" component={Edit} />
+          <Route exact path="/login" component={Login} />
         </Switch>
       </Router>
     </div>

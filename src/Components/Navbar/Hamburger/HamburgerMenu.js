@@ -13,6 +13,10 @@ class MenuLinks extends React.Component {
                     link: '/',
                 },
                 {
+                    text: 'Login',
+                    link: '/login',
+                },
+                {
                     text: 'About',
                     link: '/about',
                 },
