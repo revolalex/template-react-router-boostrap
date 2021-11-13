@@ -12,6 +12,7 @@ class Blog extends React.Component {
         return ( 
             <div className="blog-background">
                <BlogContainer/>
+               <br/><br/>
             </div>
          );
     }

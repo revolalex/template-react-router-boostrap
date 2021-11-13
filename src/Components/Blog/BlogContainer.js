@@ -133,6 +133,7 @@ class BlogCards extends React.Component {
         await axios
             .delete(`http://localhost:8000/api/blogs/${id}/`)
             .then((res) => that.getData())
+      
     }
     onAddSubmit() {
         this.getData()
