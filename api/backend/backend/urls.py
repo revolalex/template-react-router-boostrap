@@ -17,6 +17,9 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
 from blog import views
+# from django.views.decorators.csrf import csrf_exempt
+from rest_framework_jwt.views import obtain_jwt_token
+from blog.views import current_user, UserList
 
 router = routers.DefaultRouter()
 router.register(r'blogs', views.BlogView, 'blog')
@@ -24,4 +27,9 @@ router.register(r'blogs', views.BlogView, 'blog')
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include(router.urls)),
+    path('users/', include('django.contrib.auth.urls')), # new
+    path('token-auth/', obtain_jwt_token),
+    path('current_user/', current_user),
+    path('users/', UserList.as_view())
+
 ]

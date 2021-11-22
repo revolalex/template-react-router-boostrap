@@ -5,6 +5,7 @@ import './BlogContainer.css'
 import MyBlogCards from "./MyBlogCard";
 import { toast } from 'react-toastify';
 import FormAdd from "../Add/FormAdd";
+import { connect } from "react-redux";
 
 
 class BlogCards extends React.Component {
@@ -13,7 +14,16 @@ class BlogCards extends React.Component {
         this.state = {
             articles: [],
             search: '',
-            stack: ''
+            stack: '',
+            headerWithToken: {
+                headers: {
+                    Authorization: "Token " + this.props.token,
+                },
+                auth: {
+                    username: this.props.username,
+                    password: this.props.password
+                }
+            },
         }
         this.onFilterSelect = this.onFilterSelect.bind(this)
         this.onSearchInput = this.onSearchInput.bind(this)
@@ -32,8 +42,9 @@ class BlogCards extends React.Component {
     }
 
     async getData() {
-        await axios.get('http://localhost:8000/api/blogs/')
+        await axios.get('http://localhost:8000/api/blogs/', this.state.headerWithToken)
             .then(res => {
+                console.log(res)
                 this.setState({ articles: res.data })
             })
     }
@@ -41,7 +52,7 @@ class BlogCards extends React.Component {
     async onFilterSelect(event) {
         this.setState({ stack: event.target.value })
         let data
-        await axios.get('http://localhost:8000/api/blogs/')
+        await axios.get('http://localhost:8000/api/blogs/', this.state.headerWithToken)
             .then(res => {
                 data = res.data
                 const filterArticles = res.data.filter(el => el.stack === event.target.value)
@@ -57,7 +68,7 @@ class BlogCards extends React.Component {
 
     async onSearchInput(event) {
         const search = this.state.search
-        await axios.get('http://localhost:8000/api/blogs/')
+        await axios.get('http://localhost:8000/api/blogs/', this.state.headerWithToken)
             .then(res => {
                 const filterArticles = res.data.filter(el => el.text.includes(search) && el.title.includes(search))
                 this.setState({ articles: filterArticles })
@@ -68,7 +79,7 @@ class BlogCards extends React.Component {
 
     async onKeyUp(event) {
         if (event.charCode === 13) {
-            await axios.get('http://localhost:8000/api/blogs/')
+            await axios.get('http://localhost:8000/api/blogs/', this.state.headerWithToken)
                 .then(res => {
                     const filterArticles = res.data.filter(el => el.text.includes(this.state.search))
                     this.setState({ articles: filterArticles })
@@ -114,7 +125,7 @@ class BlogCards extends React.Component {
     });
 
     onSubmiEdit(modifyArticleToPut, id) {
-        axios.put(`http://localhost:8000/api/blogs/${id}/`, modifyArticleToPut)
+        axios.put(`http://localhost:8000/api/blogs/${id}/`, modifyArticleToPut,this.state.headerWithToken)
             .then(res => {
                 if (res.status === 200) {
                     this.notify()
@@ -123,7 +134,7 @@ class BlogCards extends React.Component {
                     this.notifyError()
                 }
             })
-        
+
         document.getElementById('close-modal-edit').click()
     }
 
@@ -131,16 +142,14 @@ class BlogCards extends React.Component {
         let that = this
         const id = event.target.id
         await axios
-            .delete(`http://localhost:8000/api/blogs/${id}/`)
+            .delete(`http://localhost:8000/api/blogs/${id}/`,this.state.headerWithToken)
             .then((res) => that.getData())
-      
+
     }
     onAddSubmit() {
         this.getData()
     }
-    closeDeleteModal(){
 
-    }
 
     render() {
 
@@ -216,4 +225,16 @@ class BlogCards extends React.Component {
     }
 }
 
-export default BlogCards;
+const mapStateToProps = (state) => ({
+    token: state.userReducer.token,
+    password: state.userReducer.password,
+    username: state.userReducer.username
+});
+
+const mapDispatchToProps = {
+
+};
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(BlogCards);
+

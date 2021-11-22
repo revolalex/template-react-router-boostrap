@@ -18,10 +18,13 @@
 }
 
 .form-wrapper {
+  opacity: .85;
   animation: hideLayer .3s ease-out forwards;
 }
 
+
 .form-wrapper.is-active {
+  opacity: 1;
   animation: showLayer .3s ease-in forwards;
 }
 

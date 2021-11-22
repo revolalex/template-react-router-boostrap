@@ -11,10 +11,13 @@ class Blogs extends React.Component {
         }
     }
     componentDidMount() {
-        axios.get('http://localhost:8000/api/blogs/')
-            .then(res => {
-                this.setState({ articles: res.data })
-            })
+        const token = localStorage.getItem('token')
+        console.log(token)
+        // axios.get('http://localhost:8000/api/blogs/')
+        //     .then(res => {
+        //         console.log(res)
+        //         // this.setState({ articles: res.data })
+        //     })
 
     }
     render() {

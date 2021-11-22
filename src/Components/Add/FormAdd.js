@@ -44,17 +44,14 @@ function FormAdd(props) {
         event.preventDefault();
         const form = event.currentTarget;
         if (form.checkValidity() === false) {
-
             setValidated(true);
         } else {
-
             await axios.post('http://localhost:8000/api/blogs/', formData)
                 .then(res => {
                     if (res.status === 201) {
                         notify()
                     } else {
                         notifyError()
-
                     }
                 })
             setFormData({
@@ -70,7 +67,6 @@ function FormAdd(props) {
     };
 
     const handleBackgroundColor = () => {
-
         if (formData.stack === 'Front') {
             return 'info'
         } else {
