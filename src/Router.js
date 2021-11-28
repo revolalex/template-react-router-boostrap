@@ -20,7 +20,7 @@ class MyRouter extends Component {
         }
     }
     render() {
-        const {auth} =this.state
+        const {auth} =this.props.auth
         return (
             <Router>
                 <ToastContainer />

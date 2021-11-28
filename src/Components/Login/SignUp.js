@@ -1,7 +1,7 @@
 import React from "react";
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import './Login.css'
+import '../../Pages/Login/Login.css'
 
 
 class SignUp extends React.Component {
@@ -45,8 +45,10 @@ class SignUp extends React.Component {
             confirmPassword: '',
         })
     }
+
     // fixme ned good url
     async submitUserSignUp(event) {
+        const clickSwitch = () => { document.querySelector('.switcher-login').click() }
         event.preventDefault();
         await axios.post('http://localhost:8000/users/', this.state)
             .then(res => {
@@ -54,6 +56,7 @@ class SignUp extends React.Component {
                 if (res.status === 201) {
                     this.setState({ token: res.data.token })
                     this.notify()
+                    setTimeout(function () { clickSwitch() }, 3000);
                 }
                 if (res.status !== 201) {
                     this.notifyError()

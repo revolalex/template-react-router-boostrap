@@ -1,4 +1,5 @@
 from django.db import models
+from django.conf import settings
 
 import datetime
 # Create your models here.
@@ -20,6 +21,9 @@ class Blog(models.Model):
     categories = models.CharField(max_length=120)
     date = models.DateField(default=datetime.date.today)
     text = models.TextField()
+    # FIXME add a foreign key author in back ends
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank=True)
+    # posted_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,)
 
     def _str_(self):
         return self.title

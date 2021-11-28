@@ -141,3 +141,15 @@ body {
     font-size: 1.2em;
   }
 }
+
+.logout-button {
+  margin-left: 15%;
+  margin-right: 15%;
+  width: 70%;
+}
+
+.username{
+  position: absolute;
+  right: 15px;
+  top: 15px;
+}

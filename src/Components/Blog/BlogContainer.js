@@ -26,8 +26,8 @@ class BlogCards extends React.Component {
             },
         }
         this.onFilterSelect = this.onFilterSelect.bind(this)
-        this.onSearchInput = this.onSearchInput.bind(this)
-        this.handleInput = this.handleInput.bind(this)
+        this.buttonSearchClick = this.buttonSearchClick.bind(this)
+        this.handleSearchInput = this.handleSearchInput.bind(this)
         this.getData = this.getData.bind(this)
         this.resetSearchInput = this.resetSearchInput.bind(this)
         this.onKeyUp = this.onKeyUp.bind(this);
@@ -44,7 +44,6 @@ class BlogCards extends React.Component {
     async getData() {
         await axios.get('http://localhost:8000/api/blogs/', this.state.headerWithToken)
             .then(res => {
-                console.log(res)
                 this.setState({ articles: res.data })
             })
     }
@@ -66,7 +65,7 @@ class BlogCards extends React.Component {
         }
     }
 
-    async onSearchInput(event) {
+    async buttonSearchClick(event) {
         const search = this.state.search
         await axios.get('http://localhost:8000/api/blogs/', this.state.headerWithToken)
             .then(res => {
@@ -78,23 +77,18 @@ class BlogCards extends React.Component {
     }
 
     async onKeyUp(event) {
-        if (event.charCode === 13) {
-            await axios.get('http://localhost:8000/api/blogs/', this.state.headerWithToken)
-                .then(res => {
-                    const filterArticles = res.data.filter(el => el.text.includes(this.state.search))
-                    this.setState({ articles: filterArticles })
-                })
-            this.resetSearchInput()
-
-        }
+        await axios.get('http://localhost:8000/api/blogs/', this.state.headerWithToken)
+            .then(res => {
+                const filterArticles = res.data.filter(el => el.text.includes(this.state.search))
+                this.setState({ articles: filterArticles })
+            })
     }
 
-    handleInput(e) {
+    handleSearchInput(e) {
         if (e.target.value === "") {
             this.getData()
         }
         this.setState({ search: e.target.value })
-
     }
 
     resetSearchInput() {
@@ -104,7 +98,7 @@ class BlogCards extends React.Component {
         })
     }
 
-    notify = () => toast.success("The article was edited with succes", {
+    notify = (msg) => toast.success(msg, {
         position: "top-center",
         autoClose: 3000,
         hideProgressBar: false,
@@ -125,11 +119,16 @@ class BlogCards extends React.Component {
     });
 
     onSubmiEdit(modifyArticleToPut, id) {
-        axios.put(`http://localhost:8000/api/blogs/${id}/`, modifyArticleToPut,this.state.headerWithToken)
+        axios.put(`http://localhost:8000/api/blogs/${id}/`, modifyArticleToPut, this.state.headerWithToken)
             .then(res => {
+                console.log('lalala', res)
                 if (res.status === 200) {
-                    this.notify()
+                    this.notify("The article was edited with succes")
                     this.getData()
+                    // document.getElementsByClassName("33").collapse('hide')
+                    // document.getElementsByClassName("33").collapse('toggle')
+                    // document.getElementsByClassName("33").collapse('show')
+                    //FIXME FIND A WAY TO CLOSE THE COLLASPSE
                 } else if (res.status !== 200) {
                     this.notifyError()
                 }
@@ -139,14 +138,23 @@ class BlogCards extends React.Component {
     }
 
     async onDelete(event) {
+        event.preventDefault();
         let that = this
         const id = event.target.id
         await axios
-            .delete(`http://localhost:8000/api/blogs/${id}/`,this.state.headerWithToken)
+            .delete(`http://localhost:8000/api/blogs/${id}/`, this.state.headerWithToken)
             .then((res) => that.getData())
 
     }
-    onAddSubmit() {
+    async onAddSubmit(formData) {
+        await axios.post('http://localhost:8000/api/blogs/', formData, this.state.headerWithToken)
+            .then(res => {
+                if (res.status === 201) {
+                    this.notify("Succes posk added")
+                } else {
+                    this.notifyError()
+                }
+            })
         this.getData()
     }
 
@@ -161,8 +169,8 @@ class BlogCards extends React.Component {
                     <Row>
                         <Col>
                             <Container className=" mb-4">
-                                <Accordion id="add-article-accordion" defaultActiveKey="1">
-                                    <Accordion.Item eventKey="0">
+                                <Accordion className="33" id="add-article-accordion" defaultActiveKey="1">
+                                    <Accordion.Item id="22" eventKey="0">
                                         <Accordion.Header>Add an article</Accordion.Header>
                                         <Accordion.Body>
                                             <FormAdd onAddSubmit={this.onAddSubmit} />
@@ -186,11 +194,11 @@ class BlogCards extends React.Component {
                                         aria-describedby="button-addon5"
                                         className="form-control"
                                         value={this.state.search}
-                                        onChange={this.handleInput}
+                                        onChange={this.handleSearchInput}
                                         onKeyPress={this.onKeyUp}
                                     />
                                     <div className="input-group-append">
-                                        <button onClick={this.onSearchInput} id="button-addon5" className="btn my-color-btn"><i className="fa fa-search my-search-icon-button"></i></button>
+                                        <button onClick={this.buttonSearchClick} id="button-addon5" className="btn my-color-btn"><i className="fa fa-search my-search-icon-button"></i></button>
                                     </div>
                                 </div>
                             </Container>

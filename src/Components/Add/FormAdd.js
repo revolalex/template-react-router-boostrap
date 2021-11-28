@@ -1,8 +1,5 @@
 import React, { useState } from 'react';
 import { Row, Form, Button, Col, InputGroup, Container, Card } from "react-bootstrap"
-import axios from 'axios';
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 import './FormAdd.css'
 
 
@@ -19,25 +16,6 @@ function FormAdd(props) {
         check: false
     });
 
-    const notify = () => toast.success("The new post was created", {
-        position: "top-center",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: false,
-        draggable: true,
-        progress: undefined,
-    });
-
-    const notifyError = (message) => toast.error(message || "Something went wrong", {
-        position: "top-center",
-        autoClose: 4000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: false,
-        draggable: true,
-        progress: undefined,
-    });
 
     const handleSubmit = async (event) => {
         event.stopPropagation();
@@ -46,14 +24,7 @@ function FormAdd(props) {
         if (form.checkValidity() === false) {
             setValidated(true);
         } else {
-            await axios.post('http://localhost:8000/api/blogs/', formData)
-                .then(res => {
-                    if (res.status === 201) {
-                        notify()
-                    } else {
-                        notifyError()
-                    }
-                })
+            onAddSubmit(formData)
             setFormData({
                 stack: "",
                 title: "",
@@ -62,7 +33,6 @@ function FormAdd(props) {
                 check: false
             })
             setValidated(false);
-            onAddSubmit()
         }
     };
 
@@ -168,9 +138,4 @@ function FormAdd(props) {
 
 }
 
-export default FormAdd;
-
-
-
-
-
+export default FormAdd

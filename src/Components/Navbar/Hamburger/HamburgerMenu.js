@@ -1,71 +1,19 @@
 import React from "react";
 import "./HamburgerMenu.css"
-import { Nav } from "react-bootstrap"
 import { connect } from "react-redux";
+import { Link } from "react-router-dom"
+import LogoutButton from "./LogoutButton";
+import MenuUsername from "./MenuUsername";
+
 
 class MenuLinks extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            auth: this.props.auth,
-            links: []
-        }         
-    }
-    componentDidMount() {
-        this.setState({ auth: this.props.auth })
-        if (this.state.auth) {
-            this.setState({
-                links: [
-                    {
-                        text: 'Home',
-                        link: '/',
-                    },
-                    {
-                        text: 'Login',
-                        link: '/login',
-                    },
 
-                    {
-                        text: 'About',
-                        link: '/about',
-                    },
-                    {
-                        text: 'Add',
-                        link: '/add',
-                    },
-                    {
-                        text: 'Edit',
-                        link: '/edit',
-                    },
-                    {
-                        text: 'Blog',
-                        link: '/blog',
-                    },
 
-                ]
-            })
-        } else {
-            this.setState({
-                links: [
-                    {
-                        text: 'Home',
-                        link: '/',
-                    },
-                    {
-                        text: 'Login',
-                        link: '/login',
-                    },
-                ]
-            })
-        }
-    }
-    
     render() {
-        let links = this.state.links.map((link, i) =>
+        const links = this.props.links.map((link, i) =>
             <li key={i} className="nav-li" ref={i + 1}>
-                <Nav.Link href={link.link}>{link.text}</Nav.Link>
+                <Link to={link.link}>{link.text}</Link>
             </li>
-
         );
 
         return (
@@ -73,6 +21,7 @@ class MenuLinks extends React.Component {
                 <ul>
                     {links}
                 </ul>
+                <LogoutButton />
             </div>
         )
     }
@@ -83,15 +32,14 @@ class HamburgerMenu extends React.Component {
         super(props);
         this.state = {
             isOpen: false,
-            auth: this.props.auth
+            links: [],
         }
         this._menuToggle = this._menuToggle.bind(this);
         this._handleDocumentClick = this._handleDocumentClick.bind(this);
     }
     componentDidMount() {
-        const auth = this.props.auth
-        console.log('ICI', auth)
         document.addEventListener('click', this._handleDocumentClick, false);
+        this.setState({ auth: this.props.auth })
     }
     componentWillUnmount() {
         document.removeEventListener('click', this._handleDocumentClick, false);
@@ -111,28 +59,71 @@ class HamburgerMenu extends React.Component {
     }
     render() {
         let menuStatus = this.state.isOpen ? 'isopen' : '';
+        const links = this.props.auth ? [
+            {
+                text: 'Home',
+                link: '/',
+            },
+            {
+                text: 'Login',
+                link: '/login',
+            },
+
+            {
+                text: 'About',
+                link: '/about',
+            },
+            {
+                text: 'Add',
+                link: '/add',
+            },
+            {
+                text: 'Edit',
+                link: '/edit',
+            },
+            {
+                text: 'Blog',
+                link: '/blog',
+            },
+
+        ] : [
+            {
+                text: 'Home',
+                link: '/',
+            },
+            {
+                text: 'Login',
+                link: '/login',
+            },
+        ]
 
         return (
             <div ref="root">
                 <div className="menubar">
                     <div className="hambclicker" onClick={this._menuToggle}></div>
+                    {this.props.username !== ''
+                        ? <MenuUsername />
+                        : null
+                    }
+
                     <div id="hambmenu" className={menuStatus}><span></span><span></span><span></span><span></span></div>
                     <div className="title">
                         <span>{this.props.title}</span>
                     </div>
                 </div>
-                <MenuLinks auth={this.props.auth} menuStatus={menuStatus} />
+                <MenuLinks menuStatus={menuStatus} links={links} />
             </div>
         )
     }
 }
 
 const mapStateToProps = (state) => ({
-    auth: state.userReducer.auth
+    auth: state.userReducer.auth,
+    username: state.userReducer.username
 });
 
+// connect to action of redux
 const mapDispatchToProps = {
-
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(HamburgerMenu);

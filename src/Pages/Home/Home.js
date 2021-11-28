@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, Button } from "react-bootstrap";
+import { Container } from "react-bootstrap";
 import "./Home.css"
 import { setAuth } from "../../Store/actions/user";
 import { connect } from "react-redux";
@@ -8,9 +8,7 @@ class Home extends React.Component {
 
 
     render() {
-        const authToFalse=()=>{
-            this.props.setAuth(false)
-        }
+
         return (
             <div className="backgroundImage">
                 <Container style={{ textAlign: "center" }} className="">
@@ -22,8 +20,6 @@ class Home extends React.Component {
                     </h4>
                     <br /> <br /> <br /> <br /> <br /> <br />
                     <h4>Please login first to have the full acces of the application, or create an user</h4>
-                    <Button onClick={authToFalse} variant="danger">set auth to false</Button>
-
                 </Container>
 
             </div>
@@ -34,13 +30,13 @@ class Home extends React.Component {
 
 //connect to redux state
 const mapStateToProps = (state) => ({
-    auth : state.userReducer.auth
+    auth: state.userReducer.auth
 
 });
 
 // connect to action of redux
 const mapDispatchToProps = {
-setAuth
+    setAuth
 };
 
 // connect to redux

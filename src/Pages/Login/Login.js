@@ -1,14 +1,19 @@
 import React from "react";
-import { Container } from "react-bootstrap";
 import './Login.css'
+import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import SignUp from "./SignUp";
+import { Container } from "react-bootstrap";
+// component
+import SignUp from "../../Components/Login/SignUp";
 // allow to connect the component to redux store
 import { connect } from "react-redux";
 // Action to redux store
 import { setToken, setUsername, setPassword, setAuth } from "../../Store/actions/user";
 
+/**
+ * @state  usernamme, password, token
+ */
 class Login extends React.Component {
     constructor(props) {
         super(props);
@@ -48,23 +53,22 @@ class Login extends React.Component {
         event.preventDefault();
         await axios.post('http://localhost:8000/token-auth/', this.state)
             .then(res => {
+                console.log(res)
                 if (res.status === 200) {
-                    console.log(res)
                     this.setState({ token: res.data.token })
-                    this.setState({ username: res.data.user.username })
                     this.props.setToken(res.data.token);
                     this.props.setPassword(this.state.password)
                     this.props.setUsername(this.state.username)
                     this.props.setAuth(true)
-                    this.notify()
                     this.resetState()
-                    const push = ()=> {return this.props.history.push('/')}
-                    setTimeout(function(){ push() }, 2500);
+                    this.notify()
+                    const push = () => { return this.props.history.push('/blog') }
+                    setTimeout(function () { push() }, 3000);
                 }
                 this.resetState()
             })
     }
-    notify = () => toast.success("You are login", {
+    notify = () => toast.success(`Welcome ${this.props.username} you are login`, {
         position: "top-center",
         autoClose: 3000,
         hideProgressBar: false,
@@ -93,7 +97,7 @@ class Login extends React.Component {
                         <h1 class="section-title">Welcome to the ultime articles dashboard</h1>
                         <div class="forms">
                             <div class="form-wrapper is-active">
-                                <button type="button" class="switcher switcher-login" style={{ opacity: "1" }}>
+                                <button type="button" id="myloginSwitch" class="switcher switcher-login" style={{ opacity: "1" }}>
                                     Login
                                     <span class="underline"></span>
                                 </button>

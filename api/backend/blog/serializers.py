@@ -8,7 +8,8 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('username',)
+        fields = '__all__'
+        # fields = ('username','id')
 
 
 class UserSerializerWithToken(serializers.ModelSerializer):
@@ -34,10 +35,10 @@ class UserSerializerWithToken(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('token', 'username', 'password')
+        fields = ('token', 'username', 'password', id)
         
 
 class BlogSerializer(serializers.ModelSerializer):
     class Meta:
         model = Blog
-        fields = ('id', 'title', 'categories', 'date', 'text', 'stack')
+        fields = ('id', 'title', 'categories', 'date', 'text', 'stack', 'author')
